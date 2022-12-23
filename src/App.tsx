@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/effect-coverflow'
@@ -8,16 +8,28 @@ import { EffectCoverflow, Navigation } from 'swiper'
 import styled from '@emotion/styled'
 import data from './data/manitto.json'
 
-const initialSlideIndex = 25
+const initialSlideIndex = 0
+interface Manitto {
+  from: string
+  to: string
+  img: string
+}
 
 const Main = () => {
   const [activeIndex, setActiveIndex] = useState(initialSlideIndex)
-  const { Sheet1: manittoList } = data
-  manittoList.sort((manitto1, manitto2) => {
-    if (manitto1.to < manitto2.to) return -1
-    if (manitto1.to > manitto2.to) return 1
-    return 0
-  })
+  const [manittoList, setManittoList] = useState<Manitto[]>([])
+  const { Sheet1 } = data
+  useEffect(() => {
+    const arr: Manitto[] = []
+    const firstManitto = Sheet1.find(manitto => manitto.to === 'Francis Kim')
+    if(firstManitto) arr.push(firstManitto)
+    while((arr[arr.length - 1].to !== 'Francis Kim' || arr.length === 1) && arr.length < 50) {
+      const currentManittoName = arr[arr.length - 1].from
+      const nextManitto = Sheet1.find(manitto => manitto.to === currentManittoName)
+      if(nextManitto) arr.push(nextManitto)
+    }
+    setManittoList(arr)
+  }, [Sheet1])
 
   return (
     <Container>
@@ -57,7 +69,7 @@ const Main = () => {
             setActiveIndex(slide.activeIndex)
           }}
         >
-          {manittoList.map((manitto, index) => (
+          {manittoList.length && manittoList.map((manitto, index) => (
             <SwiperSlide key={index}>
               <Content isSelected={index === activeIndex}>
                 <CarouselTitle className="no-select">
@@ -70,10 +82,10 @@ const Main = () => {
                       <LetterBorder />
                       <LetterTitle />
                       <LetterContext />
-                      <Manitto className="no-select">
+                      <ManittoText className="no-select">
                         <Name>{manitto.from}</Name>님<br />
                         입니다!
-                      </Manitto>
+                      </ManittoText>
                       <ImageWrapper>
                         {!!manitto.img ? (
                           <Profile
@@ -121,23 +133,23 @@ const Container = styled.div`
   margin: 0 auto;
   height: 100vh;
   .swiper-button-prev {
-    width: 2.2rem;
+    width: 1.5rem;
     height: 1.5rem;
     border-radius: 8px;
     background-color: #222;
     &::after {
-      content: '<A';
+      content: '<';
       color: white;
       font-size: 16px;
     }
   }
   .swiper-button-next {
-    width: 2.2rem;
+    width: 1.5rem;
     height: 1.5rem;
     border-radius: 8px;
     background-color: #222;
     &::after {
-      content: 'Z>';
+      content: '>';
       color: white;
       font-size: 16px;
     }
@@ -262,7 +274,7 @@ const Container = styled.div`
 
 const Content = styled.div<{ isSelected: boolean }>`
   width: 11rem;
-  height: 24rem;
+  height: 25rem;
   position: relative;
   opacity: ${({ isSelected }) => !isSelected && '0.5'};
 `
@@ -442,7 +454,7 @@ const CarouselTitle = styled.p`
   padding: 0.5rem;
   border-radius: 8px;
 `
-const Manitto = styled.p`
+const ManittoText = styled.p`
   padding: 0 0.5rem;
   font-weight: bold;
   font-size: 12px;
