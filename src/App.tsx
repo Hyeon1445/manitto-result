@@ -6,15 +6,22 @@ import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 import { EffectCoverflow, Navigation } from 'swiper'
 import styled from '@emotion/styled'
+import data from './data/manitto.json'
 
-const initialSlideIndex = 20
+const initialSlideIndex = 25
 
 const Main = () => {
   const [activeIndex, setActiveIndex] = useState(initialSlideIndex)
+  const { Sheet1: manittoList } = data
+  manittoList.sort((manitto1, manitto2) => {
+    if (manitto1.to < manitto2.to) return -1
+    if (manitto1.to > manitto2.to) return 1
+    return 0
+  })
 
   return (
     <Container>
-      <Title>Merry Christmas ~ ☆</Title>
+      <Title>Happy New Year ~ ☆</Title>
       <Description>편지를 열어 마니또를 확인해 보세요!</Description>
       {Array(20)
         .fill(1)
@@ -50,37 +57,41 @@ const Main = () => {
             setActiveIndex(slide.activeIndex)
           }}
         >
-          {Array(50)
-            .fill(1)
-            .map((slide, index) => (
-              <SwiperSlide key={index}>
-                <Content isSelected={index === activeIndex}>
-                  <CarouselTitle className="no-select">
-                    <Name>Sally Lee</Name>님의 <br /> 마니또는...
-                  </CarouselTitle>
-                  <LetterContainer>
-                    <AnimatedMail className="animated-mail">
-                      <BackFold />
-                      <Letter className="letter">
-                        <LetterBorder />
-                        <LetterTitle />
-                        <LetterContext />
-                        <Manitto className="no-select">
-                          <Name>Sally Lee</Name>님 입니다!
-                        </Manitto>
-                        <ImageWrapper>
-                          <div>img</div>
-                        </ImageWrapper>
-                      </Letter>
-                      <TopFold className="top-fold" />
-                      <LetterBody />
-                      <LeftFold />
-                    </AnimatedMail>
-                    <Shadow className="shadow" />
-                  </LetterContainer>
-                </Content>
-              </SwiperSlide>
-            ))}
+          {manittoList.map((manitto, index) => (
+            <SwiperSlide key={index}>
+              <Content isSelected={index === activeIndex}>
+                <CarouselTitle className="no-select">
+                  <Name>{manitto.to}</Name>님의 <br /> 마니또는...
+                </CarouselTitle>
+                <LetterContainer>
+                  <AnimatedMail className="animated-mail">
+                    <BackFold />
+                    <Letter className="letter">
+                      <LetterBorder />
+                      <LetterTitle />
+                      <LetterContext />
+                      <Manitto className="no-select">
+                        <Name>{manitto.from}</Name>님<br />
+                        입니다!
+                      </Manitto>
+                      <ImageWrapper>
+                        {!!manitto.img ? (
+                          <Profile
+                            src={`data:image/jpeg;base64,${manitto.img}`}
+                            alt="No Image"
+                          />
+                        ): <NoImage>No Image</NoImage>}
+                      </ImageWrapper>
+                    </Letter>
+                    <TopFold className="top-fold" />
+                    <LetterBody />
+                    <LeftFold />
+                  </AnimatedMail>
+                  <Shadow className="shadow" />
+                </LetterContainer>
+              </Content>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </SwiperContainer>
     </Container>
@@ -251,7 +262,7 @@ const Container = styled.div`
 
 const Content = styled.div<{ isSelected: boolean }>`
   width: 10rem;
-  height: 20rem;
+  height: 24rem;
   position: relative;
   opacity: ${({ isSelected }) => !isSelected && '0.5'};
 `
@@ -444,6 +455,15 @@ const ImageWrapper = styled.div`
   background-color: #f2f2f2;
   margin: 0 auto;
   width: 8rem;
-  height: 8rem
+  height: 8rem;
+`
+const Profile = styled.img`
+  width: 8rem;
+  height: 8rem;
+`
+const NoImage = styled.p`
+  font-size: 12px;
+  padding: 1rem;
+  color: #757575;
 `
 export default Main
