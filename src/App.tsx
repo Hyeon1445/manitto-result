@@ -15,7 +15,7 @@ const Main = () => {
   return (
     <Container>
       <Title>Merry Christmas ~ ☆</Title>
-      <Description>편지지를 열어 마니또를 확인해 보세요!</Description>
+      <Description>편지를 열어 마니또를 확인해 보세요!</Description>
       {Array(20)
         .fill(1)
         .map((snow, index) => (
