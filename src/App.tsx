@@ -261,7 +261,7 @@ const Container = styled.div`
 `
 
 const Content = styled.div<{ isSelected: boolean }>`
-  width: 10rem;
+  width: 11rem;
   height: 24rem;
   position: relative;
   opacity: ${({ isSelected }) => !isSelected && '0.5'};
@@ -443,7 +443,7 @@ const CarouselTitle = styled.p`
   border-radius: 8px;
 `
 const Manitto = styled.p`
-  padding: 0 1rem;
+  padding: 0 0.5rem;
   font-weight: bold;
   font-size: 12px;
 `
