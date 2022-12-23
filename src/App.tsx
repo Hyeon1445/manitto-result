@@ -68,9 +68,9 @@ const Main = () => {
                         <Manitto className="no-select">
                           <Name>Sally Lee</Name>님 입니다!
                         </Manitto>
-                        <LetterStamp>
-                          <LetterStampInner />
-                        </LetterStamp>
+                        <ImageWrapper>
+                          <div>img</div>
+                        </ImageWrapper>
                       </Letter>
                       <TopFold className="top-fold" />
                       <LetterBody />
@@ -106,7 +106,7 @@ const Container = styled.div`
   background-image: url('./tree3.jpg');
   background-repeat: no-repeat;
   background-size: cover;
-  max-width: 30rem;
+  max-width: 36rem;
   margin: 0 auto;
   height: 100vh;
   .swiper-button-prev {
@@ -251,14 +251,14 @@ const Container = styled.div`
 
 const Content = styled.div<{ isSelected: boolean }>`
   width: 10rem;
-  height: 18rem;
+  height: 20rem;
   position: relative;
   opacity: ${({ isSelected }) => !isSelected && '0.5'};
 `
 const SwiperContainer = styled.div`
   max-width: 60rem;
   margin: 0 auto;
-  padding-top: 16rem;
+  padding-top: 10rem;
 `
 
 const LetterContainer = styled.div`
@@ -288,7 +288,7 @@ const LetterContainer = styled.div`
       z-index: 0;
     }
     .animated-mail .letter {
-      height: 180px;
+      height: 16rem;
     }
     .shadow {
       width: 250px;
@@ -356,18 +356,6 @@ const LetterContext = styled.div`
   width: 20%;
   background: #cb5a5e;
 `
-
-const LetterStamp = styled.div`
-  margin-top: 10px;
-  margin-left: 120px;
-  border-radius: 100%;
-  height: 30px;
-  width: 30px;
-  background: #cb5a5e;
-  opacity: 0.3;
-`
-
-const LetterStampInner = styled.div``
 
 const TopFold = styled.div`
   position: absolute;
@@ -451,5 +439,11 @@ const Manitto = styled.p`
 const Name = styled.span`
   font-weight: 900;
   font-size: 14px;
+`
+const ImageWrapper = styled.div`
+  background-color: #f2f2f2;
+  margin: 0 auto;
+  width: 8rem;
+  height: 8rem
 `
 export default Main
