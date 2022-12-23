@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/effect-coverflow'
@@ -11,6 +11,20 @@ const Main = () => {
 
   return (
     <Container>
+      {Array(20)
+        .fill(1)
+        .map((snow, index) => (
+          <SnowFlake className="snowflake" key={`snow-1-${index}`}>
+            ❅
+          </SnowFlake>
+        ))}
+      {Array(20)
+        .fill(1)
+        .map((snow, index) => (
+          <SnowFlake className="snowflake" key={`snow-2-${index}`}>
+            ❆
+          </SnowFlake>
+        ))}
       <Swiper
         effect="coverflow"
         grabCursor
@@ -21,7 +35,7 @@ const Main = () => {
           stretch: 0,
           depth: 100,
           modifier: 1,
-          slideShadows: true,
+          slideShadows: false,
         }}
         modules={[EffectCoverflow]}
         onSlideChange={(slide) => {
@@ -33,9 +47,9 @@ const Main = () => {
           .map((slide, index) => (
             <SwiperSlide key={index}>
               <Content isSelected={index === activeIndex}>
-                <p>
+                <CarouselTitle className="no-select">
                   Sally Lee님의 <br /> 마니또는...
-                </p>
+                </CarouselTitle>
                 <LetterContainer>
                   <AnimatedMail className="animated-mail">
                     <BackFold />
@@ -43,7 +57,7 @@ const Main = () => {
                       <LetterBorder />
                       <LetterTitle />
                       <LetterContext />
-                      <p>Bruno Lee님 입니다!</p>
+                      <ManittoName>Sally Lee님 입니다!</ManittoName>
                       <LetterStamp>
                         <LetterStampInner />
                       </LetterStamp>
@@ -64,7 +78,124 @@ const Main = () => {
 }
 
 const Container = styled.div`
-  background-color: #000;
+  background-color: #000000;
+  height: 100vh;
+  @-webkit-keyframes snowflakes-fall {
+    0% {
+      top: -10%;
+    }
+    100% {
+      top: 100%;
+    }
+  }
+  @-webkit-keyframes snowflakes-shake {
+    0%,
+    100% {
+      -webkit-transform: translateX(0);
+      transform: translateX(0);
+    }
+    50% {
+      -webkit-transform: translateX(80px);
+      transform: translateX(80px);
+    }
+  }
+  @keyframes snowflakes-fall {
+    0% {
+      top: -10%;
+    }
+    100% {
+      top: 100%;
+    }
+  }
+  @keyframes snowflakes-shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(80px);
+    }
+  }
+  .snowflake {
+    position: fixed;
+    top: -10%;
+    z-index: 3;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    -webkit-animation-name: snowflakes-fall, snowflakes-shake;
+    -webkit-animation-duration: 10s, 3s;
+    -webkit-animation-timing-function: linear, ease-in-out;
+    -webkit-animation-iteration-count: infinite, infinite;
+    -webkit-animation-play-state: running, running;
+    animation-name: snowflakes-fall, snowflakes-shake;
+    animation-duration: 10s, 3s;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: infinite, infinite;
+    animation-play-state: running, running;
+  }
+  .snowflake:nth-of-type(0) {
+    left: 1%;
+    -webkit-animation-delay: 0s, 0s;
+    animation-delay: 0s, 0s;
+  }
+  .snowflake:nth-of-type(1) {
+    left: 10%;
+    -webkit-animation-delay: 1s, 1s;
+    animation-delay: 1s, 1s;
+  }
+  .snowflake:nth-of-type(2) {
+    left: 20%;
+    -webkit-animation-delay: 6s, 0.5s;
+    animation-delay: 6s, 0.5s;
+  }
+  .snowflake:nth-of-type(3) {
+    left: 30%;
+    -webkit-animation-delay: 4s, 2s;
+    animation-delay: 4s, 2s;
+  }
+  .snowflake:nth-of-type(4) {
+    left: 40%;
+    -webkit-animation-delay: 2s, 2s;
+    animation-delay: 2s, 2s;
+  }
+  .snowflake:nth-of-type(5) {
+    left: 50%;
+    -webkit-animation-delay: 8s, 3s;
+    animation-delay: 8s, 3s;
+  }
+  .snowflake:nth-of-type(6) {
+    left: 60%;
+    -webkit-animation-delay: 6s, 2s;
+    animation-delay: 6s, 2s;
+  }
+  .snowflake:nth-of-type(7) {
+    left: 70%;
+    -webkit-animation-delay: 2.5s, 1s;
+    animation-delay: 2.5s, 1s;
+  }
+  .snowflake:nth-of-type(8) {
+    left: 80%;
+    -webkit-animation-delay: 1s, 0s;
+    animation-delay: 1s, 0s;
+  }
+  .snowflake:nth-of-type(9) {
+    left: 90%;
+    -webkit-animation-delay: 3s, 1.5s;
+    animation-delay: 3s, 1.5s;
+  }
+  .snowflake:nth-of-type(10) {
+    left: 25%;
+    -webkit-animation-delay: 2s, 0s;
+    animation-delay: 2s, 0s;
+  }
+  .snowflake:nth-of-type(11) {
+    left: 65%;
+    -webkit-animation-delay: 4s, 2.5s;
+    animation-delay: 4s, 2.5s;
+  }
 `
 
 const Index = styled.p`
@@ -72,12 +203,12 @@ const Index = styled.p`
   color: pink;
 `
 const Content = styled.div<{ isSelected: boolean }>`
-  background-color: black;
+  /* background-color: black; */
   width: 10rem;
-  height: 30rem;
+  height: 20rem;
   color: white;
   position: relative;
-  opacity: ${({isSelected}) => !isSelected && '0.3'};
+  opacity: ${({ isSelected }) => !isSelected && '0.3'};
 `
 
 const LetterContainer = styled.div`
@@ -106,11 +237,9 @@ const LetterContainer = styled.div`
       -moz-transform: rotateX(180deg);
       z-index: 0;
     }
-
     .animated-mail .letter {
       height: 180px;
     }
-
     .shadow {
       width: 250px;
     }
@@ -167,11 +296,11 @@ const LetterTitle = styled.div`
   margin-left: 5px;
   height: 10px;
   width: 40%;
-  background: #cb5a5e;
+  background: #04653e;
 `
 
 const LetterContext = styled.div`
-  margin-top: 10px;
+  margin-top: 6px;
   margin-left: 5px;
   height: 10px;
   width: 20%;
@@ -179,7 +308,7 @@ const LetterContext = styled.div`
 `
 
 const LetterStamp = styled.div`
-  margin-top: 30px;
+  margin-top: 10px;
   margin-left: 120px;
   border-radius: 100%;
   height: 30px;
@@ -248,5 +377,23 @@ const Shadow = styled.div`
     rgba(0, 0, 0, 0),
     rgba(0, 0, 0, 0)
   );
+`
+
+const SnowFlake = styled.div`
+  color: #fff;
+  font-size: 1em;
+  font-family: Arial, sans-serif;
+  text-shadow: 0 0 5px #000;
+`
+
+const CarouselTitle = styled.p`
+  color: white;
+  font-weight: 900;
+  font-size: 14px;
+`
+const ManittoName = styled.p`
+  padding: 0 1rem;
+  font-weight: bold;
+  font-size: 12px;
 `
 export default Main
