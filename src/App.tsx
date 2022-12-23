@@ -3,14 +3,19 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/effect-coverflow'
 import 'swiper/css/pagination'
-import { EffectCoverflow } from 'swiper'
+import 'swiper/css/navigation'
+import { EffectCoverflow, Navigation } from 'swiper'
 import styled from '@emotion/styled'
 
+const initialSlideIndex = 20
+
 const Main = () => {
-  const [activeIndex, setActiveIndex] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(initialSlideIndex)
 
   return (
     <Container>
+      <Title>Merry Christmas ~ ☆</Title>
+      <Description>편지지를 열어 마니또를 확인해 보세요!</Description>
       {Array(20)
         .fill(1)
         .map((snow, index) => (
@@ -25,61 +30,107 @@ const Main = () => {
             ❆
           </SnowFlake>
         ))}
-      <Swiper
-        effect="coverflow"
-        grabCursor
-        centeredSlides
-        slidesPerView={3}
-        coverflowEffect={{
-          rotate: 50,
-          stretch: 0,
-          depth: 100,
-          modifier: 1,
-          slideShadows: false,
-        }}
-        modules={[EffectCoverflow]}
-        onSlideChange={(slide) => {
-          setActiveIndex(slide.activeIndex)
-        }}
-      >
-        {Array(50)
-          .fill(1)
-          .map((slide, index) => (
-            <SwiperSlide key={index}>
-              <Content isSelected={index === activeIndex}>
-                <CarouselTitle className="no-select">
-                  Sally Lee님의 <br /> 마니또는...
-                </CarouselTitle>
-                <LetterContainer>
-                  <AnimatedMail className="animated-mail">
-                    <BackFold />
-                    <Letter className="letter">
-                      <LetterBorder />
-                      <LetterTitle />
-                      <LetterContext />
-                      <ManittoName>Sally Lee님 입니다!</ManittoName>
-                      <LetterStamp>
-                        <LetterStampInner />
-                      </LetterStamp>
-                    </Letter>
-                    <TopFold className="top-fold" />
-                    <LetterBody />
-                    <LeftFold />
-                  </AnimatedMail>
-                  <Shadow className="shadow" />
-                </LetterContainer>
-              </Content>
-            </SwiperSlide>
-          ))}
-      </Swiper>
-      <Index>{activeIndex}</Index>
+      <SwiperContainer>
+        <Swiper
+          effect="coverflow"
+          grabCursor
+          centeredSlides
+          slidesPerView={3}
+          navigation
+          initialSlide={initialSlideIndex}
+          coverflowEffect={{
+            rotate: 50,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: false,
+          }}
+          modules={[EffectCoverflow, Navigation]}
+          onSlideChange={(slide) => {
+            setActiveIndex(slide.activeIndex)
+          }}
+        >
+          {Array(50)
+            .fill(1)
+            .map((slide, index) => (
+              <SwiperSlide key={index}>
+                <Content isSelected={index === activeIndex}>
+                  <CarouselTitle className="no-select">
+                    <Name>Sally Lee</Name>님의 <br /> 마니또는...
+                  </CarouselTitle>
+                  <LetterContainer>
+                    <AnimatedMail className="animated-mail">
+                      <BackFold />
+                      <Letter className="letter">
+                        <LetterBorder />
+                        <LetterTitle />
+                        <LetterContext />
+                        <Manitto className="no-select">
+                          <Name>Sally Lee</Name>님 입니다!
+                        </Manitto>
+                        <LetterStamp>
+                          <LetterStampInner />
+                        </LetterStamp>
+                      </Letter>
+                      <TopFold className="top-fold" />
+                      <LetterBody />
+                      <LeftFold />
+                    </AnimatedMail>
+                    <Shadow className="shadow" />
+                  </LetterContainer>
+                </Content>
+              </SwiperSlide>
+            ))}
+        </Swiper>
+      </SwiperContainer>
     </Container>
   )
 }
 
+const Title = styled.h1`
+  font-size: 12px;
+  position: absolute;
+  color: white;
+  padding: 1rem;
+`
+const Description = styled.h2`
+  font-size: 16px;
+  position: absolute;
+  color: white;
+  padding: 1rem;
+  top: 1.2rem;
+`
+
 const Container = styled.div`
-  background-color: #000000;
+  position: relative;
+  background-image: url('./tree3.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  max-width: 30rem;
+  margin: 0 auto;
   height: 100vh;
+  .swiper-button-prev {
+    width: 2.2rem;
+    height: 1.5rem;
+    border-radius: 8px;
+    background-color: #222;
+    &::after {
+      content: '<A';
+      color: white;
+      font-size: 16px;
+    }
+  }
+  .swiper-button-next {
+    width: 2.2rem;
+    height: 1.5rem;
+    border-radius: 8px;
+    background-color: #222;
+    &::after {
+      content: 'Z>';
+      color: white;
+      font-size: 16px;
+    }
+  }
   @-webkit-keyframes snowflakes-fall {
     0% {
       top: -10%;
@@ -198,17 +249,16 @@ const Container = styled.div`
   }
 `
 
-const Index = styled.p`
-  text-align: center;
-  color: pink;
-`
 const Content = styled.div<{ isSelected: boolean }>`
-  /* background-color: black; */
   width: 10rem;
-  height: 20rem;
-  color: white;
+  height: 18rem;
   position: relative;
-  opacity: ${({ isSelected }) => !isSelected && '0.3'};
+  opacity: ${({ isSelected }) => !isSelected && '0.5'};
+`
+const SwiperContainer = styled.div`
+  max-width: 60rem;
+  margin: 0 auto;
+  padding-top: 16rem;
 `
 
 const LetterContainer = styled.div`
@@ -388,12 +438,18 @@ const SnowFlake = styled.div`
 
 const CarouselTitle = styled.p`
   color: white;
-  font-weight: 900;
   font-size: 14px;
+  background-color: black;
+  padding: 0.5rem;
+  border-radius: 8px;
 `
-const ManittoName = styled.p`
+const Manitto = styled.p`
   padding: 0 1rem;
   font-weight: bold;
   font-size: 12px;
+`
+const Name = styled.span`
+  font-weight: 900;
+  font-size: 14px;
 `
 export default Main
